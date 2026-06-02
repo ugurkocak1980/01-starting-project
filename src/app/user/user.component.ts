@@ -25,9 +25,21 @@ export class UserComponent {
 
 //Input is decorater
 //input is a function that takes an object as an argument
-import { Component, Input, input, computed, Output, EventEmitter} from '@angular/core';
+import { Component, Input, input, computed, Output, EventEmitter, output, Type} from '@angular/core';
 import { OutletContext } from '@angular/router';
 
+
+// type User = {
+//   id: string,
+//   avatar: string,
+//   name: string
+// }
+
+interface User {
+  id: string;
+  avatar: string;
+  name: string;
+}
 
 @Component({
   selector: 'app-user',
@@ -37,10 +49,25 @@ import { OutletContext } from '@angular/router';
   styleUrl: './user.component.css'
 })
 export class UserComponent {
-  @Input() id!:string; 
-  @Input({required: true}) avatar!:string; //with decorator
-  @Input({required: true}) name!:string; // with decorator
-  @Output() select = new EventEmitter();
+  // @Input() id!:string; 
+  // @Input({required: true}) avatar!:string; //with decorator
+  // @Input({required: true}) name!:string; // with decorator
+
+
+  // @Input({required: true}) user!: { 
+  //   id: string, 
+  //   avatar: string, 
+  //   name: string };
+
+
+  @Input({required: true}) user!: User;
+
+  @Output() select = new EventEmitter<string>();
+
+  // id= input.required<string>();
+  // avatar = input.required<string>();
+  // name = input.required<string>();
+  // select = output<string>();
 
   // signals
   // avatar = input.required<string>();
@@ -50,11 +77,13 @@ export class UserComponent {
   //   'assets/users/' + this.avatar());
 
   get imagePath() {
-    return 'assets/users/' + this.avatar;
+    return 'assets/users/' + this.user.avatar;
   }
 
   onSelectUser() {
-    this.select.emit(this.id);
+    this.select.emit(this.user.id);
+    //    this.select.emit(this.id);
+
   }
    
 }
